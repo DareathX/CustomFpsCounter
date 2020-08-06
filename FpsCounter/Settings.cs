@@ -20,11 +20,6 @@ namespace FpsCounter
         {
             InitializeComponent();
             FpsCounter = fpsCounter;
-            BackColor = Color.FromArgb(47, 49, 54);
-            TitleBar.BackColor = Color.FromArgb(32, 34, 37);
-            ExitButton.ForeColor = Color.FromArgb(166, 168, 170);
-            ExitButton.BackColor = Color.FromArgb(32, 34, 37);
-            TitleName.ForeColor = Color.FromArgb(114, 118, 125);
         }
 
         /// <summary>
