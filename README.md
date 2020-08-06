@@ -1,5 +1,5 @@
 # CustomFpsCounter
-Fps Counter that doesn't use a DLL injector
+Fps Counter that doesn't use a DLL injector, but does only work with programs that support DirectX
 
 Made a fps counter which you can customize.
 
