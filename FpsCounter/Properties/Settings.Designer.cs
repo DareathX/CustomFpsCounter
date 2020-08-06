@@ -129,5 +129,17 @@ namespace FpsCounter.Properties {
                 this["Position"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AVGFPS {
+            get {
+                return ((bool)(this["AVGFPS"]));
+            }
+            set {
+                this["AVGFPS"] = value;
+            }
+        }
     }
 }

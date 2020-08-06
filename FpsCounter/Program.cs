@@ -25,6 +25,7 @@ namespace FpsCounter
         private static List<int> avgFpsInSec = new List<int>();
         static Stopwatch watch = null;
         static object sync = new object();
+        public static bool avgFPS = Properties.Settings.Default.AVGFPS;
 
         static void EtwThreadProc()
         {
@@ -34,18 +35,36 @@ namespace FpsCounter
 
         static void OutputThreadProc()
         {
-            foreach (var x in frames.Values)
+            while (true)
             {
-                if (x.Name == GetWindowDetails().ToString())
+                double to, from;
+                lock (sync)
                 {
-                    //get the number of frames
-                    int count = x.QueryCount();
-                    x.Clear();
-                    avgFpsInSec.Add(count);
+                    to = watch.Elapsed.TotalMilliseconds;
+                    from = to - 1000;// 1 Seconds
+                    foreach (var x in frames.Values)
+                    {
+                        if (x.Name == GetWindowDetails().ToString())
+                        {
+                            //get the number of frames
+                            int count = x.QueryCount(from, to);
+                            if (avgFPS)
+                            {
+                                avgFpsInSec.Add(count);
+                            }
+                            else
+                            {
+                                fpsCalculate = count;
+                            }
+                        }
+                    }
+                    if (avgFPS)
+                    {
+                        fpsCalculate = avgFpsInSec.Count > 0 ? avgFpsInSec.Average() : 0.0;
+                    }
                 }
+                Thread.Sleep(1000);
             }
-            fpsCalculate = avgFpsInSec.Count > 0 ? avgFpsInSec.Average() : 0.0;
-            Thread.Sleep(1000);
         }
 
         [STAThread]
@@ -65,10 +84,9 @@ namespace FpsCounter
                 ((int)data.ID == EventID_DxgiPresentStart && data.ProviderGuid == DXGI_provider))
                 {
                     int pid = data.ProcessID;
-                    long t;
+                    double t;
 
-
-                    t = watch.ElapsedMilliseconds * 1000000;
+                    t = watch.Elapsed.TotalMilliseconds;
                     lock (sync)
                     {
                         //if process is not yet in Dictionary, add it
@@ -136,7 +154,7 @@ namespace FpsCounter
         static double fpsCalculate = 0;
         public static string Fps()
         {
-            return (fpsCalculate).ToString(); // Rounds the Fps
+            return Math.Round(fpsCalculate).ToString(); // Rounds the Fps
         }
 
         /// <summary>

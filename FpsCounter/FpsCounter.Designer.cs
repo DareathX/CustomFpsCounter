@@ -37,7 +37,7 @@
             // WindowHandle
             // 
             this.WindowHandle.Enabled = true;
-            this.WindowHandle.Interval = 1000;
+            this.WindowHandle.Interval = 50;
             this.WindowHandle.Tick += new System.EventHandler(this.WindowHandle_Tick);
             // 
             // FpsLabel

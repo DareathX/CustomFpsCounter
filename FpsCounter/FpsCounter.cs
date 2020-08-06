@@ -35,8 +35,8 @@ namespace FpsCounter
                 int id = m.WParam.ToInt32();
                 if (id == 1)
                 {
-                    settings.Hide();
                     settings.Show();
+                    settings.BringToFront();
                 }
             }
 
@@ -45,16 +45,7 @@ namespace FpsCounter
 
         private void WindowHandle_Tick(object sender, EventArgs e)
         {
-            foreach (var x in Program.frames.Values)
-            {
-                if (x.Name == Program.GetWindowDetails().ToString())
-                {
-                    //get the number of frames
-                    double count = x.QueryCount();
-                    x.Clear();
-                    FpsLabel.Text = count.ToString();
-                }
-            }
+            FpsLabel.Text = Program.Fps();
 
             Size = FpsLabel.Size;
             if (FpsLabel.Location.X + FpsLabel.Width > (Screen.PrimaryScreen.Bounds.Width))

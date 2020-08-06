@@ -6,28 +6,42 @@ using System.Threading.Tasks;
 
 namespace FpsCounter
 {
-        // Helper class to store frame timestamps
+    // Helper class to store frame timestamps
     public class TimestampCollection
     {
 
         public string Name { get; set; }
 
-        private List<long> timestamps = new List<long>();
+        private List<double> timestamps = new List<double>(1001);
+        object sync = new object();
 
         //add value to the collection
-        public void Add(long timestamp)
-        {   
-                timestamps.Add(timestamp); 
+        public void Add(double timestamp)
+        {
+            lock (sync)
+            {
+                timestamps.Add(timestamp);
+                if (timestamps.Count > 1000)
+                {
+                    timestamps.RemoveAt(0);
+                }
+            }
         }
 
-        public void Clear()
+        public int QueryCount(double from, double to)
         {
-            timestamps.Clear();
-        }
-
-        public int QueryCount()
-        {
-            return timestamps.Count;
+            int count = 0;
+            lock (sync)
+            {
+                foreach (var ts in timestamps)
+                {
+                    if (ts >= from && ts <= to)
+                    {
+                        count++;
+                    }
+                }
+            }
+            return count;
         }
     }
 }

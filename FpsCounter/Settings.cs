@@ -57,6 +57,14 @@ namespace FpsCounter
             FontStyleComboBox.Text = Properties.Settings.Default.FontStyle.ToString();
             FontSizeComboBox.Text = Properties.Settings.Default.FontSize.ToString();
             HotKeyTextBox.Text = Properties.Settings.Default.HotKeyModifierString + keysConverter.ConvertToString(Properties.Settings.Default.HotKey);
+            if (Properties.Settings.Default.AVGFPS)
+            {
+                AVGFPSRadioButton.Checked = true;
+            }
+            else
+            {
+                FPSRadioButton.Checked = true;
+            }
 
         }
 
@@ -328,6 +336,30 @@ namespace FpsCounter
             {
                 HotKeyTextBox.Text = e.KeyCode.ToString();
             }
+        }
+
+        private void AVGFPSRadioButton_Click(object sender, EventArgs e)
+        {
+            if (AVGFPSRadioButton.Checked)
+            {
+                Program.avgFPS = true;
+                Properties.Settings.Default.AVGFPS = true;
+            }
+        }
+
+        private void FPSRadioButton_Click(object sender, EventArgs e)
+        {
+            if (FPSRadioButton.Checked)
+            {
+                Program.avgFPS = false;
+                Properties.Settings.Default.AVGFPS = false;
+            }
+        }
+
+        private void Settings_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            Hide();
         }
     }
 }
