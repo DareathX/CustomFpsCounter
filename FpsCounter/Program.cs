@@ -22,10 +22,12 @@ namespace FpsCounter
 
         static TraceEventSession m_EtwSession;
         public static Dictionary<int, TimestampCollection> frames = new Dictionary<int, TimestampCollection>();
-        private static List<int> avgFpsInSec = new List<int>();
+        private static Queue<int> avgFpsQueue = new Queue<int>();
         static Stopwatch watch = null;
         static object sync = new object();
-        public static bool avgFPS = Properties.Settings.Default.AVGFPS;
+        public static bool avgFpsCheck = Properties.Settings.Default.AVGFPS;
+        public static bool avgFpsQueueUnlimited = Properties.Settings.Default.AVGFPSUnlimited;
+        public static int avgFpsQueueLimit = Properties.Settings.Default.AVGFPSLimit;
 
         static void EtwThreadProc()
         {
@@ -48,9 +50,24 @@ namespace FpsCounter
                         {
                             //get the number of frames
                             int count = x.QueryCount(from, to);
-                            if (avgFPS)
+                            if (avgFpsCheck)
                             {
-                                avgFpsInSec.Add(count);
+                                if (avgFpsQueueUnlimited)
+                                {
+                                    avgFpsQueue.Enqueue(count);
+                                }
+                                else if (avgFpsQueue.Count <= avgFpsQueueLimit)
+                                {
+                                    avgFpsQueue.Enqueue(count);
+                                }
+                                else
+                                {
+                                    for (int i = 0; i < avgFpsQueue.Count - avgFpsQueueLimit; i++)
+                                    {
+                                        avgFpsQueue.Dequeue();
+                                    }
+                                    avgFpsQueue.Enqueue(count);
+                                }
                             }
                             else
                             {
@@ -58,9 +75,9 @@ namespace FpsCounter
                             }
                         }
                     }
-                    if (avgFPS)
+                    if (avgFpsCheck)
                     {
-                        fpsCalculate = avgFpsInSec.Count > 0 ? avgFpsInSec.Average() : 0.0;
+                        fpsCalculate = avgFpsQueue.Count > 0 ? avgFpsQueue.Average() : 0.0;
                     }
                 }
                 Thread.Sleep(1000);

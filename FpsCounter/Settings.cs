@@ -57,6 +57,7 @@ namespace FpsCounter
             FontStyleComboBox.Text = Properties.Settings.Default.FontStyle.ToString();
             FontSizeComboBox.Text = Properties.Settings.Default.FontSize.ToString();
             HotKeyTextBox.Text = Properties.Settings.Default.HotKeyModifierString + keysConverter.ConvertToString(Properties.Settings.Default.HotKey);
+            AvgLimitTrackBar.Value = Properties.Settings.Default.AVGFPSLimit;
             if (Properties.Settings.Default.AVGFPS)
             {
                 AVGFPSRadioButton.Checked = true;
@@ -342,7 +343,9 @@ namespace FpsCounter
         {
             if (AVGFPSRadioButton.Checked)
             {
-                Program.avgFPS = true;
+                AvgLimitTrackBar.Visible = true;
+                AvgFpsLimitLabel.Visible = true;
+                Program.avgFpsCheck = true;
                 Properties.Settings.Default.AVGFPS = true;
             }
         }
@@ -351,7 +354,9 @@ namespace FpsCounter
         {
             if (FPSRadioButton.Checked)
             {
-                Program.avgFPS = false;
+                AvgLimitTrackBar.Visible = false;
+                AvgFpsLimitLabel.Visible = false;
+                Program.avgFpsCheck = false;
                 Properties.Settings.Default.AVGFPS = false;
             }
         }
@@ -360,6 +365,37 @@ namespace FpsCounter
         {
             e.Cancel = true;
             Hide();
+        }
+
+        private void AvgLimitTrackBar_Scroll(object sender, EventArgs e)
+        {
+            if (AvgLimitTrackBar.Value == 21)
+            {
+                AvgLimitToolTip.SetToolTip(AvgLimitTrackBar, "∞");
+                Program.avgFpsQueueUnlimited = true;
+                Properties.Settings.Default.AVGFPSUnlimited = true;
+            }
+            else
+            {
+                AvgLimitToolTip.SetToolTip(AvgLimitTrackBar, AvgLimitTrackBar.Value.ToString());
+                Program.avgFpsQueueLimit = AvgLimitTrackBar.Value;
+                Program.avgFpsQueueUnlimited = false;
+                Properties.Settings.Default.AVGFPSUnlimited = false;
+            }
+            Properties.Settings.Default.AVGFPSLimit = AvgLimitTrackBar.Value;
+
+        }
+
+        private void AvgLimitTrackBar_MouseHover(object sender, EventArgs e)
+        {
+            if (AvgLimitTrackBar.Value == 21)
+            {
+                AvgLimitToolTip.SetToolTip(AvgLimitTrackBar, "∞");
+            }
+            else
+            {
+                AvgLimitToolTip.SetToolTip(AvgLimitTrackBar, AvgLimitTrackBar.Value.ToString());
+            }
         }
     }
 }

@@ -5331,7 +5331,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:FpsCounterSetup"
         "ProductCode" = "8:{EFB04AC8-8FE4-4A80-961E-AB33C96DAC9D}"
-        "PackageCode" = "8:{4722DA44-3A02-452D-A22E-7664AD666AFE}"
+        "PackageCode" = "8:{D6B08376-7397-427C-9F43-0C4E049D38FD}"
         "UpgradeCode" = "8:{0375487E-714C-4FBE-9A3D-27BD3DDC92E9}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -5346,7 +5346,7 @@
         "Subject" = "8:"
         "ARPCONTACT" = "8:DareathX"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:FpsCounte Installer"
+        "ARPCOMMENTS" = "8:FpsCounter Installer"
         "ARPURLINFOABOUT" = "8:"
         "ARPPRODUCTICON" = "8:_E26E160ADD2D4E72AEF418BAE30A2F7F"
         "ARPIconIndex" = "3:0"
@@ -5866,7 +5866,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_0CAAFFFF4DE74DB1BB43AFDC4B7A2B24"
             {
-            "SourcePath" = "8:..\\FpsCounter\\obj\\x86\\Debug\\FpsCounter.exe"
+            "SourcePath" = "8:..\\FpsCounter\\obj\\Release\\FpsCounter.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_5735906DD328470783CC685AF5284A4A"

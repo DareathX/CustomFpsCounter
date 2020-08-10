@@ -141,5 +141,29 @@ namespace FpsCounter.Properties {
                 this["AVGFPS"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("21")]
+        public int AVGFPSLimit {
+            get {
+                return ((int)(this["AVGFPSLimit"]));
+            }
+            set {
+                this["AVGFPSLimit"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AVGFPSUnlimited {
+            get {
+                return ((bool)(this["AVGFPSUnlimited"]));
+            }
+            set {
+                this["AVGFPSUnlimited"] = value;
+            }
+        }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.FontSetting = new System.Windows.Forms.GroupBox();
             this.FontSizeComboBox = new System.Windows.Forms.ComboBox();
             this.FontStyleComboBox = new System.Windows.Forms.ComboBox();
@@ -52,12 +53,16 @@
             this.FpsTypeSettings = new System.Windows.Forms.GroupBox();
             this.FPSRadioButton = new System.Windows.Forms.RadioButton();
             this.AVGFPSRadioButton = new System.Windows.Forms.RadioButton();
+            this.AvgLimitTrackBar = new System.Windows.Forms.TrackBar();
+            this.AvgLimitToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.AvgFpsLimitLabel = new System.Windows.Forms.Label();
             this.FontSetting.SuspendLayout();
             this.ColorSettings.SuspendLayout();
             this.HotKeySettings.SuspendLayout();
             this.PositionSettings.SuspendLayout();
             this.TitleBar.SuspendLayout();
             this.FpsTypeSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AvgLimitTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // FontSetting
@@ -355,6 +360,8 @@
             // 
             // FpsTypeSettings
             // 
+            this.FpsTypeSettings.Controls.Add(this.AvgFpsLimitLabel);
+            this.FpsTypeSettings.Controls.Add(this.AvgLimitTrackBar);
             this.FpsTypeSettings.Controls.Add(this.FPSRadioButton);
             this.FpsTypeSettings.Controls.Add(this.AVGFPSRadioButton);
             this.FpsTypeSettings.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -391,6 +398,27 @@
             this.AVGFPSRadioButton.UseVisualStyleBackColor = true;
             this.AVGFPSRadioButton.Click += new System.EventHandler(this.AVGFPSRadioButton_Click);
             // 
+            // AvgLimitTrackBar
+            // 
+            this.AvgLimitTrackBar.Location = new System.Drawing.Point(34, 82);
+            this.AvgLimitTrackBar.Maximum = 21;
+            this.AvgLimitTrackBar.Minimum = 2;
+            this.AvgLimitTrackBar.Name = "AvgLimitTrackBar";
+            this.AvgLimitTrackBar.Size = new System.Drawing.Size(162, 45);
+            this.AvgLimitTrackBar.TabIndex = 9;
+            this.AvgLimitTrackBar.Value = 2;
+            this.AvgLimitTrackBar.Scroll += new System.EventHandler(this.AvgLimitTrackBar_Scroll);
+            this.AvgLimitTrackBar.MouseHover += new System.EventHandler(this.AvgLimitTrackBar_MouseHover);
+            // 
+            // AvgFpsLimitLabel
+            // 
+            this.AvgFpsLimitLabel.AutoSize = true;
+            this.AvgFpsLimitLabel.Location = new System.Drawing.Point(36, 63);
+            this.AvgFpsLimitLabel.Name = "AvgFpsLimitLabel";
+            this.AvgFpsLimitLabel.Size = new System.Drawing.Size(160, 18);
+            this.AvgFpsLimitLabel.TabIndex = 10;
+            this.AvgFpsLimitLabel.Text = "Avg of how many frames";
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -417,6 +445,7 @@
             this.TitleBar.ResumeLayout(false);
             this.FpsTypeSettings.ResumeLayout(false);
             this.FpsTypeSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AvgLimitTrackBar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -447,5 +476,8 @@
         private System.Windows.Forms.GroupBox FpsTypeSettings;
         private System.Windows.Forms.RadioButton FPSRadioButton;
         private System.Windows.Forms.RadioButton AVGFPSRadioButton;
+        private System.Windows.Forms.TrackBar AvgLimitTrackBar;
+        private System.Windows.Forms.ToolTip AvgLimitToolTip;
+        private System.Windows.Forms.Label AvgFpsLimitLabel;
     }
 }
