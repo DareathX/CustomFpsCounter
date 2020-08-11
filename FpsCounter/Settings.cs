@@ -14,12 +14,12 @@ namespace FpsCounter
 {
     public partial class Settings : Form
     {
-        private FpsCounter FpsCounter;
+        private FpsCounter fpsCounter;
         private KeysConverter keysConverter = new KeysConverter();
         public Settings(FpsCounter fpsCounter)
         {
             InitializeComponent();
-            FpsCounter = fpsCounter;
+            this.fpsCounter = fpsCounter;
         }
 
         /// <summary>
@@ -69,6 +69,35 @@ namespace FpsCounter
 
         }
 
+        private void UpdatePosition()
+        {
+            switch (fpsCounter.positionForm)
+            {
+                case "Top Right":
+                    if (fpsCounter.Location.X + fpsCounter.Width != (Screen.PrimaryScreen.Bounds.Width))
+                    {
+                        fpsCounter.Location = new Point(Screen.PrimaryScreen.Bounds.Width - fpsCounter.Size.Width);
+                    }
+                    break;
+                case "Bottom Right":
+                    if (fpsCounter.Location.X + fpsCounter.Width != (Screen.PrimaryScreen.Bounds.Width))
+                    {
+                        fpsCounter.Location = new Point(Screen.PrimaryScreen.Bounds.Width - fpsCounter.Size.Width);
+                    }
+                    if (fpsCounter.Location.Y + fpsCounter.Height != (Screen.PrimaryScreen.Bounds.Height))
+                    {
+                        fpsCounter.Location = new Point(Screen.PrimaryScreen.Bounds.Width - fpsCounter.Size.Width, Screen.PrimaryScreen.Bounds.Height - fpsCounter.Size.Height);
+                    }
+                    break;
+                case "Bottom Left":
+                    if (fpsCounter.Location.Y + fpsCounter.Height != (Screen.PrimaryScreen.Bounds.Height))
+                    {
+                        fpsCounter.Location = new Point(0, Screen.PrimaryScreen.Bounds.Height - fpsCounter.Size.Height);
+                    }
+                    break;
+            }
+        }
+
         /// <summary>
         /// Changes fontfamily
         /// </summary>
@@ -76,8 +105,9 @@ namespace FpsCounter
         /// <param name="e"></param>
         private void FontComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FpsCounter.FpsLabel.Font = new Font(FontComboBox.Text, FpsCounter.FpsLabel.Font.Size);
-            Properties.Settings.Default.FontFamily = new Font(FontComboBox.Text, FpsCounter.FpsLabel.Font.Size);
+            fpsCounter.FpsLabel.Font = new Font(FontComboBox.Text, fpsCounter.FpsLabel.Font.Size);
+            Properties.Settings.Default.FontFamily = new Font(FontComboBox.Text, fpsCounter.FpsLabel.Font.Size);
+            UpdatePosition();
         }
 
         /// <summary>
@@ -112,8 +142,9 @@ namespace FpsCounter
         /// <param name="e"></param>
         private void FontStyle_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FpsCounter.FpsLabel.Font = new Font(FontComboBox.Text, FpsCounter.FpsLabel.Font.Size, (FontStyle)Enum.Parse(typeof(FontStyle), FontStyleComboBox.Text, true));
+            fpsCounter.FpsLabel.Font = new Font(FontComboBox.Text, fpsCounter.FpsLabel.Font.Size, (FontStyle)Enum.Parse(typeof(FontStyle), FontStyleComboBox.Text, true));
             Properties.Settings.Default.FontStyle = (FontStyle)Enum.Parse(typeof(FontStyle), FontStyleComboBox.Text, true);
+            UpdatePosition();
         }
 
         /// <summary>
@@ -123,8 +154,9 @@ namespace FpsCounter
         /// <param name="e"></param>
         private void FontSize_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FpsCounter.FpsLabel.Font = new Font(FontComboBox.Text, Convert.ToSingle(((ComboBox)sender).Text));
+            fpsCounter.FpsLabel.Font = new Font(FontComboBox.Text, Convert.ToSingle(((ComboBox)sender).Text));
             Properties.Settings.Default.FontSize = Convert.ToSingle(((ComboBox)sender).Text);
+            UpdatePosition();
         }
 
         /// <summary>
@@ -135,7 +167,7 @@ namespace FpsCounter
         private void TextColor_Click(object sender, EventArgs e)
         {
             ColorDialogFps.ShowDialog();
-            FpsCounter.FpsLabel.ForeColor = ColorDialogFps.Color;
+            fpsCounter.FpsLabel.ForeColor = ColorDialogFps.Color;
             Properties.Settings.Default.TextColor = ColorDialogFps.Color;
         }
 
@@ -147,7 +179,7 @@ namespace FpsCounter
         private void BackgroundColor_Click(object sender, EventArgs e)
         {
             ColorDialogFps.ShowDialog();
-            FpsCounter.FpsLabel.BackColor = ColorDialogFps.Color;
+            fpsCounter.FpsLabel.BackColor = ColorDialogFps.Color;
             Properties.Settings.Default.BackgroundColor = ColorDialogFps.Color;
         }
 
@@ -158,7 +190,7 @@ namespace FpsCounter
         /// <param name="e"></param>
         private void BackgroundTransparent_Click(object sender, EventArgs e)
         {
-            FpsCounter.FpsLabel.BackColor = Color.FromArgb(255, 1, 1, 1);
+            fpsCounter.FpsLabel.BackColor = Color.FromArgb(255, 1, 1, 1);
             Properties.Settings.Default.BackgroundColor = Color.FromArgb(255, 1, 1, 1);
         }
 
@@ -169,9 +201,9 @@ namespace FpsCounter
         /// <param name="e"></param>
         private void ColorReset_Click(object sender, EventArgs e)
         {
-            FpsCounter.FpsLabel.BackColor = Color.FromArgb(255, 1, 1, 1);
+            fpsCounter.FpsLabel.BackColor = Color.FromArgb(255, 1, 1, 1);
             Properties.Settings.Default.BackgroundColor = Color.FromArgb(255, 1, 1, 1);
-            FpsCounter.FpsLabel.ForeColor = Color.Gray;
+            fpsCounter.FpsLabel.ForeColor = Color.Gray;
             Properties.Settings.Default.TextColor = Color.Gray;
         }
 
@@ -182,8 +214,9 @@ namespace FpsCounter
         /// <param name="e"></param>
         private void TopLeftButton_Click(object sender, EventArgs e)
         {
-            FpsCounter.Location = new Point(0);
+            fpsCounter.Location = new Point(0);
             Properties.Settings.Default.Position = new Point(0);
+            fpsCounter.positionForm = "Top Left";
         }
 
         /// <summary>
@@ -193,8 +226,9 @@ namespace FpsCounter
         /// <param name="e"></param>
         private void TopRightButton_Click(object sender, EventArgs e)
         {
-            FpsCounter.Location = new Point(Screen.PrimaryScreen.Bounds.Width - FpsCounter.FpsLabel.Size.Width);
-            Properties.Settings.Default.Position = new Point(Screen.PrimaryScreen.Bounds.Width - FpsCounter.FpsLabel.Size.Width);
+            fpsCounter.Location = new Point(Screen.PrimaryScreen.Bounds.Width - fpsCounter.Size.Width);
+            Properties.Settings.Default.Position = new Point(Screen.PrimaryScreen.Bounds.Width - fpsCounter.Size.Width);
+            fpsCounter.positionForm = "Top Right";
         }
 
         /// <summary>
@@ -204,8 +238,9 @@ namespace FpsCounter
         /// <param name="e"></param>
         private void BottomLeftButton_Click(object sender, EventArgs e)
         {
-            FpsCounter.Location = new Point(0, Screen.PrimaryScreen.Bounds.Height - FpsCounter.FpsLabel.Size.Height);
-            Properties.Settings.Default.Position = new Point(0, Screen.PrimaryScreen.Bounds.Height - FpsCounter.FpsLabel.Size.Height);
+            fpsCounter.Location = new Point(0, Screen.PrimaryScreen.Bounds.Height - fpsCounter.Size.Height);
+            Properties.Settings.Default.Position = new Point(0, Screen.PrimaryScreen.Bounds.Height - fpsCounter.Size.Height);
+            fpsCounter.positionForm = "Bottom Left";
         }
 
         /// <summary>
@@ -215,8 +250,9 @@ namespace FpsCounter
         /// <param name="e"></param>
         private void BottomRightButton_Click(object sender, EventArgs e)
         {
-            FpsCounter.Location = new Point(Screen.PrimaryScreen.Bounds.Width - FpsCounter.FpsLabel.Size.Width, Screen.PrimaryScreen.Bounds.Height - FpsCounter.FpsLabel.Size.Width);
-            Properties.Settings.Default.Position = new Point(Screen.PrimaryScreen.Bounds.Width - FpsCounter.FpsLabel.Size.Width, Screen.PrimaryScreen.Bounds.Height - FpsCounter.FpsLabel.Size.Width);
+            fpsCounter.Location = new Point(Screen.PrimaryScreen.Bounds.Width - fpsCounter.Size.Width, Screen.PrimaryScreen.Bounds.Height - fpsCounter.Size.Height);
+            Properties.Settings.Default.Position = new Point(Screen.PrimaryScreen.Bounds.Width - fpsCounter.Size.Width, Screen.PrimaryScreen.Bounds.Height - fpsCounter.Size.Height);
+            fpsCounter.positionForm = "Bottom Right";
         }
 
         private void ExitButton_Click(object sender, EventArgs e)
@@ -253,7 +289,7 @@ namespace FpsCounter
         /// <param name="e"></param>
         private void ChangeHotKeyButton_Click(object sender, EventArgs e)
         {
-            FpsCounter.GlobalHotKeyUnRegister();
+            fpsCounter.GlobalHotKeyUnRegister();
             if (HotKeyTextBox.Text.Contains(Keys.Alt.ToString()) || HotKeyTextBox.Text.Contains(Keys.Control.ToString()) || HotKeyTextBox.Text.Contains(Keys.Shift.ToString()))
             {
                 string[] gettingModifiers = HotKeyTextBox.Text.Split('+');
@@ -295,7 +331,7 @@ namespace FpsCounter
                 if (gettingModifiers.Length > 1)
                 {
                     var key = keysConverter.ConvertFromString(gettingModifiers[1]);
-                    FpsCounter.GlobalHotKeyRegister((int)key, globalModifier);
+                    fpsCounter.GlobalHotKeyRegister((int)key, globalModifier);
                     Properties.Settings.Default.HotKey = (int)key;
                     Properties.Settings.Default.HotKeyModifier = globalModifier;
                 }
@@ -303,7 +339,7 @@ namespace FpsCounter
             else
             {
                 var key = keysConverter.ConvertFromString(HotKeyTextBox.Text);
-                FpsCounter.GlobalHotKeyRegister((int)key, 0x0000);
+                fpsCounter.GlobalHotKeyRegister((int)key, 0x0000);
                 Properties.Settings.Default.HotKey = (int)key;
                 Properties.Settings.Default.HotKeyModifier = 0x0000;
                 Properties.Settings.Default.HotKeyModifierString = "";
@@ -339,6 +375,11 @@ namespace FpsCounter
             }
         }
 
+        /// <summary>
+        /// Changes the visibility of the avglimittrackbar en avgfpslimitlabel and enables the avg fps calculation method
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AVGFPSRadioButton_Click(object sender, EventArgs e)
         {
             if (AVGFPSRadioButton.Checked)
@@ -350,6 +391,11 @@ namespace FpsCounter
             }
         }
 
+        /// <summary>
+        /// Changes the visibility of the avglimittrackbar en avgfpslimitlabel and enables the fps calculation method
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FPSRadioButton_Click(object sender, EventArgs e)
         {
             if (FPSRadioButton.Checked)
@@ -367,6 +413,11 @@ namespace FpsCounter
             Hide();
         }
 
+        /// <summary>
+        /// Sets ∞ when trackbar value is 21, uses and saves the value for the calculation method.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AvgLimitTrackBar_Scroll(object sender, EventArgs e)
         {
             if (AvgLimitTrackBar.Value == 21)
@@ -386,6 +437,11 @@ namespace FpsCounter
 
         }
 
+        /// <summary>
+        /// To see the trackbar value on hover
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AvgLimitTrackBar_MouseHover(object sender, EventArgs e)
         {
             if (AvgLimitTrackBar.Value == 21)

@@ -11,7 +11,13 @@ namespace FpsCounter
         public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
         [DllImport("user32.dll")]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
+        static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
         private Settings settings;
+        public string positionForm;
+
 
         public FpsCounter()
         {
@@ -25,6 +31,7 @@ namespace FpsCounter
             StartPosition = FormStartPosition.Manual;
             Location = Properties.Settings.Default.Position;
             Boolean hotKeyRegistered = RegisterHotKey(Handle, 1, Properties.Settings.Default.HotKeyModifier, Properties.Settings.Default.HotKey);
+            FormClickThrough();
         }
 
         protected override void WndProc(ref Message m)
@@ -45,13 +52,29 @@ namespace FpsCounter
 
         private void WindowHandle_Tick(object sender, EventArgs e)
         {
-            FpsLabel.Text = Program.Fps();
 
+            FpsLabel.Text = Program.Fps();
             Size = FpsLabel.Size;
-            if (FpsLabel.Location.X + FpsLabel.Width > (Screen.PrimaryScreen.Bounds.Width))
+            switch (positionForm)
             {
-                Location = new Point(Screen.PrimaryScreen.Bounds.Width - Size.Width);
+                case "Top Right":
+                    if (Location.X + Width != (Screen.PrimaryScreen.Bounds.Width))
+                    {
+                        Location = new Point(Screen.PrimaryScreen.Bounds.Width - Size.Width);
+                    }
+                    break;
+                case "Bottom Right":
+                    if (Location.X + Width != (Screen.PrimaryScreen.Bounds.Width))
+                    {
+                        Location = new Point(Screen.PrimaryScreen.Bounds.Width - Size.Width);
+                    }
+                    if (Location.Y + Height != (Screen.PrimaryScreen.Bounds.Height))
+                    {
+                        Location = new Point(Screen.PrimaryScreen.Bounds.Width - Size.Width, Screen.PrimaryScreen.Bounds.Height - Size.Height);
+                    }
+                    break;
             }
+           
         }
 
         /// <summary>
@@ -61,7 +84,7 @@ namespace FpsCounter
         /// <param name="modifier"></param>
         public void GlobalHotKeyRegister(int key, int modifier)
         {
-            Boolean hotKeyRegistered = RegisterHotKey(Handle, 1, modifier, key);
+            RegisterHotKey(Handle, 1, modifier, key);
         }
 
         /// <summary>
@@ -69,7 +92,14 @@ namespace FpsCounter
         /// </summary>
         public void GlobalHotKeyUnRegister()
         {
-            Boolean hotKeyUnRegistered = UnregisterHotKey(Handle, 1);
+            UnregisterHotKey(Handle, 1);
+        }
+
+        private void FormClickThrough()
+        {
+            int initialStyle = GetWindowLong(Handle, -20);
+            SetWindowLong(Handle, -20, initialStyle | 0x80000 | 0x20);
+
         }
     }
 }
